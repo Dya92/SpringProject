@@ -15,8 +15,10 @@ public class BookController {
     }
 
     @RequestMapping("/books")
+    //pass the implementation of model interface at runtime
     public String getBooks(Model model) {
         model.addAttribute("books", bookRepository.findAll());
+        //return a view called "books"
         return "books";
     }
 }
