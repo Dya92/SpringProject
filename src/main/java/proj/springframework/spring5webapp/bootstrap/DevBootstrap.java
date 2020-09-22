@@ -11,6 +11,8 @@ import proj.springframework.spring5webapp.repositories.AuthorRepository;
 import proj.springframework.spring5webapp.repositories.BookRepository;
 import proj.springframework.spring5webapp.repositories.PublisherRepository;
 
+import java.security.PublicKey;
+
 @Component
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -21,11 +23,6 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     @Autowired
     private PublisherRepository publisherRepository;
 
-//    public DevBootstrap(AuthorRepository authorRepository, BookRepository bookRepository, PublisherRepository publisherRepository) {
-//        this.authorRepository = authorRepository;
-//        this.bookRepository = bookRepository;
-//        this.publisherRepository = publisherRepository;
-//    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -33,27 +30,25 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
     }
 
     private void initData() {
+
+        Publisher publisher = new Publisher();
+        publisher.setName("foo");
+        publisherRepository.save(publisher);
+
         //Eric
         Author eric = new Author("Eric", "Evans");
-        Publisher harper = new Publisher();
-        harper.setName("Harper Collins");
-        Book ddd = new Book("Domain Driven Design", "1234", harper);
+        Book ddd = new Book("Domain Driven Design", "1234", publisher);
         eric.getBooks();
         ddd.getAuthors().add(eric);
 
-        publisherRepository.save(harper);
         authorRepository.save(eric);
         bookRepository.save(ddd);
 
-
         //Rod
         Author rod = new Author("Rod", "Johnson");
-        Publisher worx = new Publisher();
-        worx.setName("Worx");
-        Book noEJB = new Book("J2EE Development without EJB", "23444", worx);
+        Book noEJB = new Book("J2EE Development without EJB", "23444", publisher);
         rod.getBooks().add(noEJB);
 
-        publisherRepository.save(worx);
         bookRepository.save(noEJB);
         authorRepository.save(rod);
 
